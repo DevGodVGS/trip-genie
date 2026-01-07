@@ -1,11 +1,10 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Calendar, MapPin, Sparkles } from "lucide-react";
-import { Button } from "react-bootstrap";
-import heroImage from "../assets/hero-travel.jpg";
-import bg from "../assets/bg.jpg";
 import { useMemo } from "react";
+import { Button } from "react-bootstrap";
+import bg from "../assets/bg.jpg";
 
-const HeroSection = ({ onGetStarted }) => {
+const HeroSection = ({ onGetStarted, handleSeeHowItWorks }) => {
     const fadeUp = useMemo(
         () => ({
             initial: { opacity: 0, y: 30 },
@@ -118,9 +117,14 @@ const HeroSection = ({ onGetStarted }) => {
                         >
                             Plan Your Trip <ArrowRight size={20} />
                         </Button>
-                        <Button variant="outline-light" className="btn-hero-outline">
+                        <Button
+                            variant="outline-light"
+                            className="btn-hero-outline"
+                            onClick={handleSeeHowItWorks}
+                        >
                             See How It Works
                         </Button>
+
                     </motion.div>
 
                     <motion.div

@@ -1,7 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useMemo, useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
+import About from "../components/About";
+import Destinations from "../components/Destinations";
 import HeroSection from "../components/HeroSection";
+import HowItWorks from "../components/HowItWorks";
 import ItineraryDisplay from "../components/ItineraryDisplay";
 import ItinerarySkeleton from "../components/ItinerarySkeleton";
 import TripForm from "../components/TripForm";
@@ -59,6 +62,12 @@ const Index = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, [transitionTo]);
 
+    const handleSeeHowItWorks = () => setAppState("how");
+    const handleBackToHero = () => setAppState("landing");
+
+    const handleSeeDestinations = () => setAppState("destinations");
+    const handleSeeAbout = () => setAppState("about");
+
     return (
         <div className="min-vh-100" style={{ backgroundColor: "var(--color-background)" }}>
             <Navbar fixed="top" className="py-2" style={navStyle}>
@@ -69,12 +78,31 @@ const Index = () => {
                     </Navbar.Brand>
 
                     <Nav className="ms-auto d-none d-md-flex gap-4">
-                        {["How it Works", "Destinations", "About"].map((item) => (
-                            <Nav.Link key={item} href="#" className="text-muted-custom">
-                                {item}
-                            </Nav.Link>
-                        ))}
+                        <Nav.Link
+                            onClick={handleSeeHowItWorks}
+                            className={`text-muted-custom ${appState === "how" ? "fw-semibold text-dark" : ""}`}
+                            style={{ cursor: "pointer" }}
+                        >
+                            How it Works
+                        </Nav.Link>
+
+                        <Nav.Link
+                            onClick={handleSeeDestinations}
+                            className={`text-muted-custom ${appState === "destinations" ? "fw-semibold text-dark" : ""}`}
+                            style={{ cursor: "pointer" }}
+                        >
+                            Destinations
+                        </Nav.Link>
+
+                        <Nav.Link
+                            onClick={handleSeeAbout}
+                            className={`text-muted-custom ${appState === "about" ? "fw-semibold text-dark" : ""}`}
+                            style={{ cursor: "pointer" }}
+                        >
+                            About
+                        </Nav.Link>
                     </Nav>
+
                 </Container>
             </Navbar>
 
@@ -88,7 +116,7 @@ const Index = () => {
                             animate="animate"
                             exit="exit"
                         >
-                            <HeroSection onGetStarted={handleGetStarted} />
+                            <HeroSection onGetStarted={handleGetStarted} handleSeeHowItWorks={handleSeeHowItWorks} />
                             {appState === "form" && <TripForm onSubmit={handleFormSubmit} />}
                         </motion.div>
                     )}
@@ -122,10 +150,45 @@ const Index = () => {
                             />
                         </motion.div>
                     )}
+
+                    {appState === "how" && (
+                        <motion.div
+                            key="how"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                        >
+                            <HowItWorks onBackToHero={handleBackToHero} />
+                        </motion.div>
+                    )}
+
+                    {appState === "destinations" && (
+                        <motion.div
+                            key="destinations"
+                            variants={pageVariants}
+                            initial="initial"
+                            animate="animate"
+                            exit="exit"
+                        >
+                            <Destinations onBackToHero={handleBackToHero} />
+                        </motion.div>
+                    )}
+
+                    {appState === "about" && (
+                        <motion.div
+                            key="about"
+                            variants={pageVariants}
+                            initial="initial"
+                            animate="animate"
+                            exit="exit"
+                        >
+                            <About onBackToHero={handleBackToHero} />
+                        </motion.div>
+                    )}
                 </AnimatePresence>
             </main>
 
-            <footer className="footer-dark mt-auto">
+            {/* <footer className="footer-dark mt-auto">
                 <Container>
                     <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
                         <div className="navbar-brand-custom">
@@ -137,7 +200,7 @@ const Index = () => {
                         </p>
                     </div>
                 </Container>
-            </footer>
+            </footer> */}
         </div>
     );
 };
